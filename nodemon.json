@@ -1,0 +1,6 @@
+{
+    "verbose": false,
+    "ignore": ["node_modules", "/dist"],
+    "ext": "ts graphql gql",
+    "exec": "npm run start"
+}

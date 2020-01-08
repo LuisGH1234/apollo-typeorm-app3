@@ -1,0 +1,3 @@
+
+Avoid using delete statement:
+https://stackoverflow.com/questions/43594092/slow-delete-of-object-properties-in-js-in-v8/44008788
