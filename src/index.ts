@@ -1,18 +1,17 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { ApolloServer } from "apollo-server-express";
-import { makeExecutableSchema, IResolvers } from "graphql-tools";
 import { config } from "./database/config";
 import express from "express";
-import { typeDefs, resolvers } from "./lib";
-import "./modules";
+import { schema } from "./schema";
 
 async function bootstrap() {
-    // await createConnection(config);
+    await createConnection(config);
     // const resolvers: IResolvers = {};
     // const typeDefs = "";
-    const schema = makeExecutableSchema({ typeDefs, resolvers });
-    const server = new ApolloServer({ schema });
+    // const schema = GraphModule.schema();
+    // console.log(resolvers.toObject());
+    const server = new ApolloServer({ schema: schema() });
     const app = express();
     server.applyMiddleware({ app });
     app.set("PORT", process.env.PORT || 3001);

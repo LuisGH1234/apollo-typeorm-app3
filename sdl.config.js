@@ -19,9 +19,11 @@ function fromDir(startPath, filter, callback) {
     }
 }
 
-fromDir("./src/modules", /\.gql$/, function(filename) {
+console.log("SDL Config ...");
+fromDir("./src/schema", /\.gql$/, function(filename) {
     console.log("-- found:", filename);
     const destiny = filename.replace("src", "dist");
     // console.log("-- to:", destiny);
     fs.copyFileSync(filename, destiny);
 });
+console.log("SDL Config finished.");

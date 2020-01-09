@@ -1,24 +1,42 @@
 import { DocumentNode } from "graphql";
-import { IResolvers } from "graphql-tools";
+import { ResolverFn } from "apollo-server-express";
 
-const Resolvers2 = new Map();
+class MapResolver extends Map<string, Resolver> {
+    constructor(entries?: ReadonlyArray<readonly [string, Resolver]>) {
+        super(entries);
+        this.set("Query", {});
+        this.set("Mutation", {});
+    }
+
+    toObject(): ResolverRoot {
+        const obj: ResolverRoot = {};
+        for (const [key, value] of this.entries()) {
+            obj[key] = value;
+        }
+        return obj;
+    }
+}
+
+export const resolvers = new MapResolver();
 
 // TODO: Change it to map object
-export const resolvers: IResolvers = { Query: {}, Mutation: {} };
+// export const resolvers: IResolvers = { Query: {}, Mutation: {} };
 export const typeDefs: DocumentNode[] = [];
 
 interface ICollect {
     constructorName: string;
     resolver: string;
-    value: Function;
+    value: ResolverFn;
 }
 
 const collectMetadata = (options: ICollect) => {
     const { constructorName, resolver, value } = options;
-    if (resolvers[constructorName]) resolvers[constructorName][resolver] = value;
-    else {
-        resolvers[constructorName] = {} as Resolver;
-        resolvers[constructorName][resolver] = value;
+    if (resolvers.has(constructorName)) {
+        const propModule = resolvers.get(constructorName);
+        propModule![resolver] = value;
+    } else {
+        const propModule: Resolver = { [resolver]: value };
+        resolvers.set(constructorName, propModule);
     }
 };
 

@@ -1,5 +1,3 @@
-import { DocumentNode } from "graphql";
-import { typeDefs } from "..";
 import { gql } from "apollo-server-express";
 import * as fs from "fs";
 import * as path from "path";
